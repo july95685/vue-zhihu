@@ -8,11 +8,11 @@
       <ul>
         <li class="chose">
           <span>首页</span>
-          <i class="iconfont iconcolor icon-ic_star_black"  />
+          <i class="iconfont" :class="{'iconcolor icon-ic_star_black':num == 1}"  />
         </li>
         <li v-for="(x, index) in list"  @click="change(x.id)">
           <span>{{x.name}}</span>
-          <i class="iconfont icon-ic_star"  />
+          <i class="iconfont icon-ic_star" :class="{'icon-ic_star':num != 1}" />
         </li>
         <li>
           <span>项目地址</span>
@@ -72,7 +72,14 @@ export default {
     back(n){
       console.log('back');
       this.$store.commit('Flag');
-      window.history.back();
+      if(window.history){
+        window.history.back();
+      }else{
+        this.$router.push({
+          path: '/'
+        });
+      }
+     
     },
     toggle(){
       console.log('toggle');
@@ -85,9 +92,11 @@ export default {
       this.docked = false;
     },
     change(id){
-      console.log('change');
+      console.log(id);
       this.changeFlag();
+      this.docked = false;
       var path = '/theme'
+      this.$store.commit('add', id);
       this.$router.push({
         path: path,
         query: {

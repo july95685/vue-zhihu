@@ -24,6 +24,7 @@
 		<span class="middle"></span>
 		<span class="right"></span>
 	</div>
+    <infinite-scroll :scroller="scroller" :loading="loading" loading-text="加载中..." @load="loadMore" />
 </div>
 </template>
 <script>
@@ -38,6 +39,7 @@ export default {
     },
     mounted(){
         this.getList();
+        this.scroller = this.$el;
     },
     components: {
         mSwipe
@@ -75,6 +77,14 @@ export default {
                 vue.loading = false;
             });
         },
+        getMoreList(){
+            var vue = this;
+            api.getNewsByDate(this.GetDate(this.count)).then(function(data) {
+                console.log(data);
+                vue.list.push(data.data);
+                vue.loading = false;
+            });
+        },
         go(id){
             this.$router.push({
                 path: "article",
@@ -82,6 +92,22 @@ export default {
                     id: id
                 }
             });
+        },
+        loadMore(){
+            console.log(223);
+            this.loading = true;
+            this.getMoreList();
+            this.count = this.count - 1;
+        },
+        GetDate(Count) {
+            var dd = new Date();
+            dd.setDate(dd.getDate() + Count); //获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth() + 1; //获取当前月份的日期
+            m = m > 10 ? m : "0" + m
+            var d = dd.getDate();
+            d = d >= 10 ? d : "0" + d;
+            return y + "" + m + "" + d;
         }
     }
 }

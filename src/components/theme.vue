@@ -16,6 +16,12 @@
 					<p>{{list.name}}</p>
 				</h3>
 			</div>
+			<div class="list" style="margin-top:0;">
+				<div class="list-con" link @click="go(y.id)" v-for="y in list.stories">
+					<img v-if="y.images" :src="y.images[0]" />
+					<p>{{y.title}}</p>
+				</div>
+			</div>
 	</template>
 </div>
 </template>
@@ -42,7 +48,10 @@ export default{
 		
 	},
 	mounted() {
-		this.getList();
+		
+	},
+	activated: function() {
+	 	this.getList();
 	},
 	methods: {
 		go(id) {
