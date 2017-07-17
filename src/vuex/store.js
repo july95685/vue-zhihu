@@ -9,13 +9,13 @@ const state = {
   circleFlag: false,
   theme:{},
   article:{},
+  flag:false,
   before:''
 }
 const actions = {
-	// editNote({commit},note){
- //    console.log(note);
- //    commit('EDIT_NOTE',note)
- //  }
+	changeFlag({commit}){
+    commit('Flag')
+  }
 }
 const mutations = {
   // ADD_NOTE(state){
@@ -30,6 +30,9 @@ const mutations = {
     }else{
       state.drawer = true;
     }
+  },
+  Flag(state){
+    state.flag = !state.flag;
   },
   toggle(state,n){
     if(n){

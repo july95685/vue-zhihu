@@ -12,13 +12,14 @@
             <h3>热的冒烟的三伏天，来做最简单的消暑冰饮！</h3>
         </div>
     </m-swipe>
-	<div class="list">
-		<p class="list-time">2017/07/15</p>
-		<div class="list-con">
-			<p>没有太多的钱能过上幸福的生活吗？</p>
-		</div>
-	</div>
-	<div class="loading" >
+    <div class="list" v-for="(x,index) in list">
+        <p class="list-time">{{x.date.substring(0,4)+"/"+x.date.substring(4,6)+"/"+x.date.substring(6,8)}}</p>
+        <div class="list-con" v-for="c in x.stories" @click="go(c.id)">
+            <img :src="c.images[0]" />
+            <p>{{c.title}}</p>
+        </div>
+    </div>
+	<div class="loading"  v-if="!list.length">
 		<span class="left"></span>
 		<span class="middle"></span>
 		<span class="right"></span>
@@ -36,7 +37,7 @@ export default {
         })
     },
     mounted(){
-        
+        this.getList();
     },
     components: {
         mSwipe
@@ -50,6 +51,37 @@ export default {
         this.loop = false;
         if (this.swiper) {
             this.swiper.stopAutoplay();
+        }
+    },
+    data() {
+        return {
+            refreshing: false,
+            trigger: null,
+            loading: false,
+            count: 1,
+            scroller: null,
+            list: [],
+            swiper: "",
+            tops: []
+        }
+    },
+    methods:{
+        getList(){
+            var vue = this;
+            api.getNews().then(function(data) {
+                console.log(data);
+                vue.tops = data.data.top_stories;
+                vue.list.push(data.data);
+                vue.loading = false;
+            });
+        },
+        go(id){
+            this.$router.push({
+                path: "article",
+                query: {
+                    id: id
+                }
+            });
         }
     }
 }

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <header class="header">
-      <i v-if="flag" class="iconfont icon-ic_menu" @click="toggle()"></i>
-      <i v-if="!flag" class="iconfont icon-ic_back" @click="back()"></i>
+      <i v-if="!flag" class="iconfont icon-ic_menu" @click="toggle()"></i>
+      <i v-if="flag" class="iconfont icon-ic_back" @click="back()"></i>
     </header>
     <aside class="aside open" :class="{docked:docked}">
       <ul>
@@ -23,20 +23,21 @@
 
       </div>
     </aside>
-    <router-view  class="app-view"> </router-view>
-
+    <keep-alive>
+      <router-view  class="app-view"> </router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapActions } from 'vuex'
 import api from './api/index'
 export default {
   computed:{
     ...mapState({
       circle:state => state.circleFlag,
       num: state => state.num,
-
+      flag: state => state.flag
     })
   },
   mounted:function(){
@@ -49,7 +50,6 @@ export default {
     return {
       list:[],
       timer:'',
-      flag:false,
       open:false,
       docked:false,
       transitionName: 'slide-left'
@@ -66,9 +66,13 @@ export default {
 
   },
   methods:{
+    ...mapActions([
+      'changeFlag',
+    ]),
     back(n){
       console.log('back');
-      this.flag = !this.flag;
+      this.$store.commit('Flag');
+      window.history.back();
     },
     toggle(){
       console.log('toggle');
@@ -82,6 +86,7 @@ export default {
     },
     change(id){
       console.log('change');
+      this.changeFlag();
       var path = '/theme'
       this.$router.push({
         path: path,
