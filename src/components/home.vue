@@ -40,6 +40,8 @@ export default {
     mounted(){
         this.getList();
         this.scroller = this.$el;
+        console.log('home mounted');
+        
     },
     components: {
         mSwipe

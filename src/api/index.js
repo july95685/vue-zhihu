@@ -43,4 +43,12 @@ export default {
 			}
 		} )
 	},
+	getExpressData(){
+		console.log(223);
+		var url = "http://localhost:8080/api/tours";
+		return axios.get( url )
+	},
+	linkMongodb(){
+		
+	}
 }

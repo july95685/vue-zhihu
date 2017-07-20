@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <header class="header">
-      <i v-if="!flag" class="iconfont icon-ic_menu" @click="toggle()"></i>
-      <i v-if="flag" class="iconfont icon-ic_back" @click="back()"></i>
+      <i v-if="true" class="iconfont icon-ic_menu" @click="toggle()"></i>
+      <i v-if="false" class="iconfont icon-ic_back" @click="back()"></i>
     </header>
     <aside class="aside open" :class="{docked:docked}">
       <ul>
@@ -86,6 +86,9 @@ export default {
       this.flag = !this.flag;
       console.log(this.flag);
       this.docked = true;
+      api.getExpressData().then(function(data){
+        console.log(data);
+      })
     },
     prevent(){
       console.log(223);
